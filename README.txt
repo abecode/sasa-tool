@@ -38,6 +38,11 @@ or::
 
 > export PYTHONPATH=<path to directory containing this readme>
 
+Note: sentiment analysis is not for the faint of heart.  If you are easily
+offended by vulgar language, please close your eyes and scroll down::
+
+> echo -e "fuck this fucking shit\ngreat sounds good I love it" | ./bin/classifyFromCmdLine.py
+
 
 
 License
@@ -54,8 +59,9 @@ This code was first released by the collaboration of two labs at the
 University of Southern California (USC), the Signal Analysis and
 Interpretation Laboratory (SAIL) and Annenberg Innovation Laboratory (AIL).
 The sentiment research at SAIL is supported by grants including NSF, NIH, and
-DARPA.  The sentiment research at AIL is sponsored by companies, especially
-IBM and Orange.  
+DARPA.  The sentiment research at AIL is sponsored by the lab sponsors,
+especially IBM, a AIL founding sponsor, and Orange, the flagship brand of
+France Telecom.
 
 This work was made possible by using existing open source projects and code.
 NLTK (nltk.org) provides some of the basic classes of the SASA tool,
