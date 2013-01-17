@@ -17,9 +17,7 @@ or if you don't have a google id::
 This project depends on NLTK, the natural language toolkit, which also depends
 on other libraries.  Please follow the instructions for installing this
 library at http://nltk.org/install.html .
-***Windows users***
- You may face a bug(as of January 16th, 2013) while installing the setup tools. Refer :http://selfsolved.com/problems/setuptools-06c11-fails-to-instal.This will help you get a 32-bit compatible version
-******
+(windows users may need to consult http://selfsolved.com/problems/setuptools-06c11-fails-to-instal)
 
 
 Usage
@@ -39,7 +37,7 @@ or::
 
 > export PYTHONPATH=<path to directory containing this readme>
 
-(Windows equivalent is : set PYTHONPATH)
+(Windows equivalent is : set PYTHONPATH=<path to this directory>)
 
 
 Note: sentiment analysis is not for the faint of heart.  If you are easily
@@ -47,8 +45,6 @@ offended by vulgar language, please close your eyes and scroll down::
 
 > echo -e "fuck this fucking shit\ngreat sounds good I love it" | ./bin/classifyFromCmdLine.py
 
-
-(windows users: Git Push may give you errors regarding username and password for code. Google.  Look up your auto generated password for code.google. It should probably be at https://code.google.com/hosting/settings. Then follow the instructions given here - http://stackoverflow.com/questions/6031214/git-how-to-use-netrc-file-on-windows-to-save-user-and-password)
 
 
 License
