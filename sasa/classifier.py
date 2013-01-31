@@ -21,9 +21,9 @@ class Classifier(nltk.ClassifierI):
     normalizer = N1()
     tokenizer = Tokenizer()
 
-    #def __init__(self,modelfile="model.naivebayes-bool-simple-1"):
-    def __init__(self,modelfile="models/model.unigram.nb.bool.politics.unbiased"):
-        modelpath = os.path.join(os.path.abspath(os.path.dirname(__file__)), modelfile) 
+    def __init__(self,modelfile="model.unigram.nb.bool.politics.unbiased"):
+        
+        modelpath = os.path.join(os.path.abspath(os.path.dirname(__file__)),"models", modelfile) 
         f = open(modelpath,'rb')
         self.model = pickle.load(f)
         f.close()
