@@ -1,6 +1,6 @@
 from distutils.core import setup
 setup(name='sasa',
-      version='0.1.0',
+      version='0.1.3',
       description='SAIL/AIL Sentiment Analyzer',
       author='Abe Kazemzadeh',
       author_email='kazemzad@usc.edu',
@@ -8,6 +8,7 @@ setup(name='sasa',
       packages=['sasa'],
       package_dir={'sasa':'sasa'},
       package_data={'sasa': ['models/model.unigram.nb.bool.politics.unbiased']},
+      requires=['nltk'],
       #package_data={'sasa': ['models/*']},
       license='apache 2.0',
       classifiers = [
