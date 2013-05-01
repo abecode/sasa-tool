@@ -5,7 +5,25 @@ SASA Sentiment Analysis Tool
 Installation
 ===============
 
-Currently, this tool is not set up to be installed system-wide.  Simply check
+Pip Installation of library files
+-------------------------------------
+
+SASA tool can be installed with pip, the python module installer:
+
+> pip install sasa
+
+You may need to use `sudo` i.e.,
+
+> sudo pip install sasa
+
+see the python tool `virtualenv` for information about local installation.
+
+You will also need to install nltk.  Please see the link below for instructions for NLTK.
+
+Download source
+-----------------
+
+The source code for this tool can also be downloaded with git.  Simply check
 out the code using git::
 
 > git clone https://yourgoogleid@code.google.com/p/sasa-tool/
@@ -13,6 +31,9 @@ out the code using git::
 or if you don't have a google id::
 
 > git clone https://code.google.com/p/sasa-tool/
+
+Dependencies
+----------------
 
 This project depends on NLTK, the natural language toolkit, which also depends
 on other libraries.  Please follow the instructions for installing this
@@ -28,8 +49,11 @@ The usage instructions were designed for a linux environment, but should work
 comparably in other posix type environments (e.g., mac terminal, cygwin on
 windows)
 
-Currently, the python files are not installed system-wide, so first the
-current directory/folder must added to the python path::
+Currently, the command line script is not installed system-wide, so follow the 
+git source installation instructions.  The command line script is in ./bin
+
+If the python library was not installed through `pip`, then the
+sasa directory/folder must added to the python path::
 
 > . setup.env
 
