@@ -47,7 +47,7 @@ __email__ = "See the author's website"
 ######################################################################
 
 import re
-import htmlentitydefs
+import sasa.htmlentitydefs
 
 ######################################################################
 # The following strings are components in the regular expression
@@ -68,7 +68,7 @@ emoticon_string = r"""
       [<>]?
       [:;=8]                     # eyes
       [\-o\*\']?                 # optional nose
-      [\)\]\(\[dDpP/\:\}\{@\|\\] # mouth      
+      [\)\]\(\[dDpP/\:\}\{@\|\\] # mouth
       |
       [\)\]\(\[dDpP/\:\}\{@\|\\] # mouth
       [\-o\*\']?                 # optional nose
@@ -84,20 +84,20 @@ regex_strings = (
       (?:            # (international)
         \+?[01]
         [\-\s.]*
-      )?            
+      )?
       (?:            # (area code)
         [\(]?
         \d{3}
         [\-\s.\)]*
-      )?    
+      )?
       \d{3}          # exchange
-      [\-\s.]*   
+      [\-\s.]*
       \d{4}          # base
     )"""
     ,
     # Emoticons:
     emoticon_string
-    ,    
+    ,
     # HTML tags:
      r"""<[^>]+>"""
     ,
@@ -115,7 +115,7 @@ regex_strings = (
     |
     (?:[\w_]+)                     # Words without apostrophes or dashes.
     |
-    (?:\.(?:\s*\.){1,})            # Ellipsis dots. 
+    (?:\.(?:\s*\.){1,})            # Ellipsis dots.
     |
     (?:\S)                         # Everything else that isn't whitespace.
     """
@@ -123,7 +123,7 @@ regex_strings = (
 
 ######################################################################
 # This is the core tokenizing regex:
-    
+
 word_re = re.compile(r"""(%s)""" % "|".join(regex_strings), re.VERBOSE | re.I | re.UNICODE)
 
 # The emoticon string gets its own regex so that we can preserve case for them as needed:
@@ -144,19 +144,19 @@ class Tokenizer:
         """
         Argument: s -- any string or unicode object
         Value: a tokenize list of strings; conatenating this list returns the original string if preserve_case=False
-        """        
+        """
         # Try to ensure unicode:
-        try:
-            s = unicode(s)
-        except UnicodeDecodeError:
-            s = str(s).encode('string_escape')
-            s = unicode(s)
+        # try:
+        #     s = unicode(s)
+        # except UnicodeDecodeError:
+        #     s = str(s).encode('string_escape')
+        #     s = unicode(s)
         # Fix HTML character entitites:
         s = self.__html2unicode(s)
         # Tokenize:
         words = word_re.findall(s)
         # Possible alter the case, but avoid changing emoticons like :D into :d:
-        if not self.preserve_case:            
+        if not self.preserve_case:
             words = map((lambda x : x if emoticon_re.search(x) else x.lower()), words)
         return words
 
@@ -168,13 +168,13 @@ class Tokenizer:
         try:
             import twitter
         except ImportError:
-            print "Apologies. The random tweet functionality requires the Python twitter library: http://code.google.com/p/python-twitter/"
+            print("Apologies. The random tweet functionality requires the Python twitter library: http://code.google.com/p/python-twitter/")
         from random import shuffle
         api = twitter.Api()
         tweets = api.GetPublicTimeline()
         if tweets:
             for tweet in tweets:
-                if tweet.user.lang == 'en':            
+                if tweet.user.lang == 'en':
                     return self.tokenize(tweet.text)
         else:
             raise Exception("Apologies. I couldn't get Twitter to give me a public English-language tweet. Perhaps try again")
@@ -191,7 +191,7 @@ class Tokenizer:
                 entnum = ent[2:-1]
                 try:
                     entnum = int(entnum)
-                    s = s.replace(ent, unichr(entnum))	
+                    s = s.replace(ent, unichr(entnum))
                 except:
                     pass
         # Now the alpha versions:
@@ -199,10 +199,10 @@ class Tokenizer:
         ents = filter((lambda x : x != amp), ents)
         for ent in ents:
             entname = ent[1:-1]
-            try:            
+            try:
                 s = s.replace(ent, unichr(htmlentitydefs.name2codepoint[entname]))
             except:
-                pass                    
+                pass
             s = s.replace(amp, " and ")
         return s
 
@@ -217,7 +217,7 @@ if __name__ == '__main__':
         )
 
     for s in samples:
-        print "======================================================================"
-        print s
+        print("======================================================================")
+        print(s)
         tokenized = tok.tokenize(s)
-        print "\n".join(tokenized)
+        print("\n".join(tokenized))

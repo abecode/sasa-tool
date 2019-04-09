@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 """ This code reads lines from STDIN and classifies them as
 negative/neutral/positive/unsure.  it also outputs valence (negative the
@@ -14,23 +14,15 @@ __maintainer__ = "last modified by Abe Kazemzadeh"
 __email__ = "See the author's website"
 
 import sys
+from sasa.classifier import Classifier
 
-try:
-    from sasa.classifier import Classifier
-except ImportError:
-    raise ImportError("Did you try to run '. setup.env'?\n" + 
-                      "(or add the sasa-tool directory to PYTHONPATH, ie export PYTHONPATH=<this director>)?")
-
-
-classifier = Classifier()    
+classifier = Classifier()
 
 for line in sys.stdin:
-    print "classifying %s"%line.strip()
+    print("classifying %s"%line.strip())
     sentiment, valence, posterior = classifier.classifyFromText(line)
-    print sentiment, 
-    print valence, 
-    print "pNeg=%s"%str(posterior.prob("negative")), 
-    print "pNeu=%s"%str(posterior.prob('neutral')), 
-    print "pPos=%s"%str(posterior.prob('positive')), 
-    print "pUns=%s"%str(posterior.prob('unsure')), 
-    print
+    print(sentiment, valence,
+          "pNeg=%s"%str(posterior.prob("negative")),
+          "pNeu=%s"%str(posterior.prob('neutral')),
+          "pPos=%s"%str(posterior.prob('positive')),
+          "pUns=%s"%str(posterior.prob('unsure')))

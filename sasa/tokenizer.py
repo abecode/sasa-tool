@@ -26,9 +26,9 @@ def tokenize(tweet):
         text = tokenizer.tokenize(text)
 
         return codecs.encode(u" ".join(text), "utf-8")
-    except Exception, err:
-        print >> sys.stderr, err
-        print >> sys.stderr, tweet
+    except Exception as err:
+        print(err, file=sys.stderr)
+        print(tweet, file=sys.stderr)
         return None
 
 def init(preserve_case=True):
@@ -41,4 +41,4 @@ if __name__ == "__main__":
         text = tokenize(tweet)
         if text is None:
             text = "NONE"
-        print text
+        print(text)

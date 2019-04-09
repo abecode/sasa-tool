@@ -10,6 +10,7 @@ import nltk
 import codecs
 import pickle
 import traceback
+from htmlentitydefs import name2codepoint
 
 __author__ = "Abe Kazemzadeh, Dogan Can, Hao Wang"
 __version__ = "$Revision: 1 $"
@@ -20,9 +21,8 @@ __maintainer__ = "Last modified by Abe Kazemzadeh"
 __email__ = "See the authors' website"
 
 import gflags as flags
-FLAGS=flags.FLAGS
+FLAGS = flags.FLAGS
 
-from htmlentitydefs import name2codepoint
 # for some reason, python 2.5.2 doesn't have this one (apostrophe)
 name2codepoint['#39'] = 39
 debug = False # if True, the model won't be loaded, 0 will be assigned to all tweets, .
@@ -30,7 +30,7 @@ debug = False # if True, the model won't be loaded, 0 will be assigned to all tw
 def unescape(s):
     "unescape HTML code refs; c.f. http://wiki.python.org/moin/EscapingHtml"
     return re.sub('&(%s);' % '|'.join(name2codepoint),
-              lambda m: unichr(name2codepoint[m.group(1)]), s)
+                  lambda m: unichr(name2codepoint[m.group(1)]), s)
 
 #def tokenize(line):
 #    return line.lower().split()
@@ -46,7 +46,7 @@ def features(tweet, n):
 
 def init(modelfile="model.naivebayes-bool-simple-1"):
     global classifier
-    
+
     # print init message and version number
     match = re.match('\$Revision:\s+(.*?)\s+\$', __version__)
     if match != None:
@@ -54,11 +54,11 @@ def init(modelfile="model.naivebayes-bool-simple-1"):
     else:
         ver = __version__
     sys.stderr.write("init sentiment python script version " + ver + '\n')
-    
+
     if debug: return
 
     # read model from file
-    modelpath = os.path.join(os.path.abspath(os.path.dirname(__file__)), modelfile)    
+    modelpath = os.path.join(os.path.abspath(os.path.dirname(__file__)), modelfile)
     f = open(modelpath)
     classifier = pickle.load(f)
     f.close()
@@ -66,28 +66,25 @@ def init(modelfile="model.naivebayes-bool-simple-1"):
 # input: tweet in json
 def getSentiment(tweet_json):
     try:
-#        print >> sys.stderr, 'sentiment before decode', type(tweet_json), tweet_json
         tweet = codecs.decode(tweet_json, 'utf-8', "replace")
-#        print >> sys.stderr, 'sentiment after decode', type(tweet_json), tweet_json
         t = json.loads(tweet)
 
         if debug:
             t['valence'] = 0
             t['sentiment_classification'] = 'pos'
             return codecs.encode(json.dumps(t), 'utf-8')
-    except Exception, err:
+    except Exception:
         traceback.print_exc()
-        print >> sys.stderr, 'sentiment len =', len(tweet_json), ' text =', tweet_json
+        print('sentiment len =', len(tweet_json), ' text =', tweet_json, file=sys.stderr)
         return None
     text = t[u'text']
     # Process input text
-    text = unescape(text)#.encode('utf8'))                            # encode unicode chars in utf8, 
+    text = unescape(text)#.encode('utf8'))                            # encode unicode chars in utf8,
 
-    #print text
     labels = sorted(classifier.labels())
-    feat = features(t,1) #1 refers to unigram
-    hyp = classifier.classify(feat) 
-    classprobs = classifier.prob_classify(feat) 
+    feat = features(t, 1) #1 refers to unigram
+    hyp = classifier.classify(feat)
+    classprobs = classifier.prob_classify(feat)
     if hyp == 'negative':
         valence = - classprobs.prob('negative')
     elif hyp == 'positive':
@@ -97,19 +94,20 @@ def getSentiment(tweet_json):
 
     t['valence'] = valence # "%f" % (valence)
     t['sentiment_classification'] = hyp
-    #t['ratings'] = " ".join(["%s[%.2f]" % (s + w, r) for w, s, r in zip(words, word_status, ratings)])
+    #t['ratings'] = \
+    #    " ".join(["%s[%.2f]" % (s + w, r) for w, s, r in zip(words, word_status, ratings)])
     return codecs.encode(json.dumps(t), 'utf-8')
-    
+
 ##==================================================================================================
 ## MAIN
 ##==================================================================================================
 
 if __name__ == "__main__":
-    
+
     flags.DEFINE_string("model_path", "model.naivebayes-bool-simple-1", "pickled naive bayes model")
-    
+
     argv = FLAGS(sys.argv)
-    
+
     init(FLAGS.model_path)
     for t in sys.stdin:
         t = codecs.decode(t, 'utf-8')
@@ -117,4 +115,4 @@ if __name__ == "__main__":
         if not t: continue
         t = getSentiment(t)
         if t != None:
-            print codecs.encode(t, 'utf-8')
+            print(codecs.encode(t, 'utf-8'))

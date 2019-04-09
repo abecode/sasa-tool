@@ -1,14 +1,16 @@
-from distutils.core import setup
+from setuptools import setup
 setup(name='sasa',
-      version='0.1.3',
+      version='0.2.0',
       description='SAIL/AIL Sentiment Analyzer',
       author='Abe Kazemzadeh',
       author_email='kazemzad@usc.edu',
       url='https://code.google.com/p/sasa-tool/',
       packages=['sasa'],
       package_dir={'sasa':'sasa'},
-      package_data={'sasa': ['models/model.unigram.nb.bool.politics.unbiased']},
-      requires=['nltk'],
+      package_data={'sasa': ['models/model.unigram.nb.bool.politics.unbiased',
+                             'models/model.unigram.nb.bool.politics.positivebias',
+                             'models/model.unigram.nb.bool.politics']},
+      install_requires=['nltk>=3.4'],
       #package_data={'sasa': ['models/*']},
       license='apache 2.0',
       classifiers = [

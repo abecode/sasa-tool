@@ -177,12 +177,12 @@ EXAMPLE USAGE:
     try:
       argv = FLAGS(argv)  # parse flags
     except gflags.FlagsError, e:
-      print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
+      print('%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS))
       sys.exit(1)
     if FLAGS.debug: print 'non-flag arguments:', argv
     print 'Happy Birthday', FLAGS.name
     if FLAGS.age is not None:
-      print 'You are a %s, who is %d years old' % (FLAGS.gender, FLAGS.age)
+      print('You are a %s, who is %d years old' % (FLAGS.gender, FLAGS.age)
 
   if __name__ == '__main__':
     main(sys.argv)
@@ -903,8 +903,8 @@ class FlagValues:
     try:
 			# N.B.: return the rest of the command-line! (non-flag arguments)
       return self.__call2__(argv)
-    except FlagsError, e:
-        print 'Error: %s\nUsage: %s [flags]\n%s' % (e, list(argv)[0], FLAGS)
+    except FlagsError as e:
+        print('Error: %s\nUsage: %s [flags]\n%s' % (e, list(argv)[0], FLAGS))
         sys.exit(1)
 
 
@@ -987,7 +987,7 @@ class FlagValues:
       try:
         optlist, unparsed_args = getopt.getopt(args, shortopts, longopts)
         break
-      except getopt.GetoptError, e:
+      except getopt.GetoptError as e:
         if not e.opt or e.opt in fl:
           # Not an unrecognized option, reraise the exception as a FlagsError
           raise FlagsError(e)
@@ -1274,9 +1274,9 @@ class FlagValues:
     flag_line_list = []  # Subset of lines w/o comments, blanks, flagfile= tags.
     try:
       file_obj = open(filename, 'r')
-    except IOError, e_msg:
-      print e_msg
-      print 'ERROR:: Unable to open flagfile: %s' % (filename)
+    except IOError as e_msg:
+      print(e_msg)
+      print('ERROR:: Unable to open flagfile: %s' % (filename))
       return flag_line_list
 
     line_list = file_obj.readlines()
@@ -1300,8 +1300,8 @@ class FlagValues:
                                                    parsed_file_list)
           flag_line_list.extend(included_flags)
         else:  # Case of hitting a circularly included file.
-          print >>sys.stderr, ('Warning: Hit circular flagfile dependency: %s'
-                               % sub_filename)
+          print('Warning: Hit circular flagfile dependency: %s'% sub_filename,
+                file=sys.stderr)
       else:
         # Any line that's not a comment or a nested flagfile should get
         # copied into 2nd position.  This leaves earlier arguements
@@ -1540,7 +1540,7 @@ class Flag:
   def Parse(self, argument):
     try:
       self.value = self.parser.Parse(argument)
-    except ValueError, e:  # recast ValueError as IllegalFlagValue
+    except ValueError as e:  # recast ValueError as IllegalFlagValue
       raise IllegalFlagValue("flag --%s: %s" % (self.name, e))
     self.present += 1
 

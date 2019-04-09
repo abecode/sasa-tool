@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import re
 
 __author__ = "Dogan Can, Abe Kazemzadeh, Hao Wang"
